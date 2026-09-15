@@ -1,158 +1,996 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Web Page</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * {
-      box-sizing: border-box;
+<title>SecureAuth — Sign In</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at 15% 20%,
+            rgba(80, 100, 255, 0.16),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 85% 80%,
+            rgba(0, 200, 180, 0.12),
+            transparent 30%
+        ),
+        #080b14;
+
+    color: #f5f7ff;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+.background-grid {
+    position: fixed;
+    inset: 0;
+
+    pointer-events: none;
+
+    opacity: 0.16;
+
+    background-image:
+        linear-gradient(
+            rgba(255, 255, 255, 0.04) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.04) 1px,
+            transparent 1px
+        );
+
+    background-size: 45px 45px;
+}
+
+.login-wrapper {
+    width: min(440px, 92%);
+    position: relative;
+    z-index: 2;
+}
+
+/* Brand */
+
+.brand {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.brand-icon {
+    width: 54px;
+    height: 54px;
+
+    margin: 0 auto 13px;
+
+    border-radius: 16px;
+
+    display: grid;
+    place-items: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6478ff,
+            #35d4c4
+        );
+
+    box-shadow:
+        0 15px 40px rgba(70, 100, 255, 0.25);
+
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.brand h1 {
+    font-size: 25px;
+    letter-spacing: -0.6px;
+}
+
+.brand p {
+    color: #858da8;
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+/* Card */
+
+.card {
+    background: rgba(17, 21, 34, 0.88);
+
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    border-radius: 22px;
+
+    padding: 34px;
+
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.45),
+        inset 0 1px rgba(255, 255, 255, 0.04);
+
+    backdrop-filter: blur(20px);
+}
+
+.card-header {
+    margin-bottom: 26px;
+}
+
+.card-header h2 {
+    font-size: 20px;
+    margin-bottom: 7px;
+}
+
+.card-header p {
+    color: #7e879f;
+    font-size: 13px;
+}
+
+/* Form */
+
+.field {
+    margin-bottom: 19px;
+}
+
+.field label {
+    display: block;
+
+    color: #b9c0d3;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    margin-bottom: 8px;
+}
+
+.input-box {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+
+    left: 14px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: #69728c;
+
+    font-size: 15px;
+
+    pointer-events: none;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    height: 48px;
+
+    border-radius: 11px;
+
+    border: 1px solid #272d40;
+
+    outline: none;
+
+    background: #0d111d;
+
+    color: #fff;
+
+    padding: 0 14px 0 40px;
+
+    font-size: 14px;
+
+    transition: 0.2s;
+}
+
+input:focus {
+    border-color: #6478ff;
+
+    box-shadow:
+        0 0 0 3px rgba(100, 120, 255, 0.11);
+}
+
+input::placeholder {
+    color: #4f576c;
+}
+
+.password-toggle {
+    position: absolute;
+
+    right: 13px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    background: none;
+
+    border: none;
+
+    color: #707a94;
+
+    cursor: pointer;
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.password-toggle:hover {
+    color: #fff;
+}
+
+/* Options */
+
+.options {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin: 4px 0 22px;
+
+    font-size: 12px;
+}
+
+.remember {
+    display: flex !important;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #858da4 !important;
+
+    cursor: pointer;
+
+    margin: 0 !important;
+}
+
+.remember input {
+    width: 14px;
+    height: 14px;
+
+    padding: 0;
+
+    accent-color: #6478ff;
+}
+
+.forgot {
+    color: #8292ff;
+
+    text-decoration: none;
+}
+
+.forgot:hover {
+    text-decoration: underline;
+}
+
+/* Login button */
+
+.login-btn {
+    width: 100%;
+    height: 49px;
+
+    border: 0;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6478ff,
+            #5268eb
+        );
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+
+    box-shadow:
+        0 10px 25px rgba(82, 104, 235, 0.22);
+}
+
+.login-btn:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 14px 30px rgba(82, 104, 235, 0.3);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+}
+
+.login-btn.loading {
+    opacity: 0.7;
+
+    pointer-events: none;
+}
+
+/* Divider */
+
+.divider {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin: 25px 0;
+
+    color: #50586d;
+
+    font-size: 11px;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+
+    flex: 1;
+
+    height: 1px;
+
+    background: #252b3b;
+}
+
+/* Demo button */
+
+.demo-btn {
+    width: 100%;
+    height: 45px;
+
+    background: #141927;
+
+    border: 1px solid #292f42;
+
+    color: #b8c0d5;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    transition: 0.2s;
+}
+
+.demo-btn:hover {
+    background: #191f30;
+
+    border-color: #3b435b;
+}
+
+/* Messages */
+
+.message {
+    display: none;
+
+    margin-top: 17px;
+
+    padding: 12px 13px;
+
+    border-radius: 9px;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+.message.error {
+    display: block;
+
+    background: rgba(255, 75, 90, 0.08);
+
+    border: 1px solid rgba(255, 75, 90, 0.2);
+
+    color: #ff9ba5;
+}
+
+.message.success {
+    display: block;
+
+    background: rgba(40, 210, 160, 0.08);
+
+    border: 1px solid rgba(40, 210, 160, 0.2);
+
+    color: #82e6c6;
+}
+
+/* Flag */
+
+.flag-box {
+    display: none;
+
+    margin-top: 18px;
+
+    padding: 21px;
+
+    border-radius: 13px;
+
+    background:
+        rgba(54, 213, 167, 0.08);
+
+    border:
+        1px solid rgba(54, 213, 167, 0.30);
+
+    text-align: center;
+
+    animation: flagAppear 0.45s ease;
+}
+
+.flag-box.visible {
+    display: block;
+}
+
+.flag-label {
+    font-size: 10px;
+
+    color: #82e6c6;
+
+    font-weight: 700;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 9px;
+}
+
+.flag-value {
+    font-family: "Courier New", monospace;
+
+    font-size: 21px;
+
+    font-weight: 700;
+
+    color: #ffffff;
+
+    letter-spacing: 1px;
+
+    user-select: all;
+}
+
+@keyframes flagAppear {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
     }
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      color: #333;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
+}
 
-    header {
-      background: #222;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
+/* Footer */
 
-    nav {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      padding: 12px;
-      background: #fff;
-    }
+.footer {
+    text-align: center;
 
-    nav a {
-      color: #333;
-      text-decoration: none;
-    }
+    color: #596177;
 
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 20px;
-    }
+    font-size: 11px;
 
+    margin-top: 20px;
+}
+
+.status {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    margin-top: 8px;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+
+    background: #36d5a7;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 8px #36d5a7;
+}
+
+/* Mobile */
+
+@media (max-width: 500px) {
     .card {
-      background: white;
-      padding: 25px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        padding: 26px 21px;
     }
 
-    .button {
-      background: #007bff;
-      color: white;
-      border: 0;
-      padding: 10px 18px;
-      border-radius: 5px;
-      cursor: pointer;
+    .brand h1 {
+        font-size: 23px;
     }
-
-    .button:hover {
-      background: #0056b3;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #222;
-      color: white;
-    }
-  </style>
+}
+</style>
 </head>
 
 <body>
 
-  <header>
-    <h1>Welcome to My Website</h1>
-    <p>A simple HTML demonstration</p>
-  </header>
+<div class="background-grid"></div>
 
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#about">About</a>
-    <a href="#services">Services</a>
-    <a href="#contact">Contact</a>
-  </nav>
+<main class="login-wrapper">
 
-  <main class="container">
+    <!-- Brand -->
 
-    <section class="card" id="home">
-      <h2>Home</h2>
-      <p>This is the main page content.</p>
-      <button class="button" onclick="showMessage()">
-        Click Me
-      </button>
+    <div class="brand">
+
+        <div class="brand-icon">
+            S
+        </div>
+
+        <h1>
+            SecureAuth
+        </h1>
+
+        <p>
+            Identity &amp; Access Management
+        </p>
+
+    </div>
+
+
+    <!-- Login Card -->
+
+    <section class="card">
+
+        <div class="card-header">
+
+            <h2>
+                Welcome back
+            </h2>
+
+            <p>
+                Sign in to continue to your account.
+            </p>
+
+        </div>
+
+
+        <form id="loginForm">
+
+            <!-- Username -->
+
+            <div class="field">
+
+                <label for="username">
+                    USERNAME
+                </label>
+
+                <div class="input-box">
+
+                    <span class="input-icon">
+                        ◎
+                    </span>
+
+                    <input
+                        id="username"
+                        name="username"
+                        type="text"
+                        autocomplete="username"
+                        placeholder="Enter your username"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Password -->
+
+            <div class="field">
+
+                <label for="password">
+                    PASSWORD
+                </label>
+
+                <div class="input-box">
+
+                    <span class="input-icon">
+                        ◆
+                    </span>
+
+                    <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        autocomplete="current-password"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        id="togglePassword"
+                    >
+                        SHOW
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Options -->
+
+            <div class="options">
+
+                <label class="remember">
+
+                    <input
+                        type="checkbox"
+                        id="remember"
+                    >
+
+                    Remember me
+
+                </label>
+
+                <a
+                    href="#"
+                    class="forgot"
+                    id="forgotPassword"
+                >
+                    Forgot password?
+                </a>
+
+            </div>
+
+
+            <!-- Login -->
+
+            <button
+                class="login-btn"
+                id="loginButton"
+                type="submit"
+            >
+                Sign in
+            </button>
+
+        </form>
+
+
+        <!-- Status message -->
+
+        <div
+            id="message"
+            class="message"
+        ></div>
+
+
+        <!-- Flag -->
+
+        <div
+            id="flagBox"
+            class="flag-box"
+        >
+
+            <div class="flag-label">
+                ACCESS GRANTED
+            </div>
+
+            <div class="flag-value">
+                9frtpfdhnn
+            </div>
+
+        </div>
+
+
+        <!-- Divider -->
+
+        <div class="divider">
+            OR
+        </div>
+
+
+        <!-- Demo -->
+
+        <button
+            class="demo-btn"
+            id="demoButton"
+            type="button"
+        >
+            Continue with demo account
+        </button>
+
     </section>
 
-    <section class="card" id="about">
-      <h2>About</h2>
-      <p>Here is some information about the website.</p>
-    </section>
 
-    <section class="card" id="services">
-      <h2>Services</h2>
-      <ul>
-        <li>Web Development</li>
-        <li>Design</li>
-        <li>Consulting</li>
-      </ul>
-    </section>
+    <!-- Footer -->
 
-    <!-- FLAG: FLAG{neelakurinji} -->
+    <div class="footer">
 
-    <section class="card" id="contact">
-      <h2>Contact</h2>
-      <form onsubmit="submitForm(event)">
-        <input type="text" id="name" placeholder="Your name">
-        <input type="email" id="email" placeholder="Your email">
-        <button type="submit" class="button">Submit</button>
-      </form>
-    </section>
+        <div>
+            © 2026 SecureAuth
+        </div>
 
-  </main>
+        <div class="status">
 
-  <footer>
-    <p>&copy; 2026 My Website</p>
-  </footer>
+            <span class="status-dot"></span>
 
-  <script>
-    function showMessage() {
-      console.log("Button clicked!");
-      alert("Hello!");
+            Authentication service operational
+
+        </div>
+
+    </div>
+
+</main>
+
+
+<script>
+/*
+    SecureAuth frontend demonstration.
+
+    This version intentionally uses only HTML, CSS and JavaScript.
+    There is no real database or SQL backend.
+
+    A real authentication system should send credentials to a
+    server-side authentication endpoint instead of validating
+    credentials in client-side JavaScript.
+*/
+
+
+const form =
+    document.getElementById("loginForm");
+
+const username =
+    document.getElementById("username");
+
+const password =
+    document.getElementById("password");
+
+const loginButton =
+    document.getElementById("loginButton");
+
+const message =
+    document.getElementById("message");
+
+const flagBox =
+    document.getElementById("flagBox");
+
+const togglePassword =
+    document.getElementById("togglePassword");
+
+const demoButton =
+    document.getElementById("demoButton");
+
+const forgotPassword =
+    document.getElementById("forgotPassword");
+
+
+
+/*
+    Display status message.
+*/
+
+function showMessage(text, type) {
+
+    message.className =
+        "message " + type;
+
+    message.textContent =
+        text;
+}
+
+
+
+/*
+    Password visibility.
+*/
+
+togglePassword.addEventListener(
+    "click",
+    function () {
+
+        const hidden =
+            password.type === "password";
+
+        password.type =
+            hidden ? "text" : "password";
+
+        togglePassword.textContent =
+            hidden ? "HIDE" : "SHOW";
+
     }
+);
 
-    function submitForm(event) {
-      event.preventDefault();
 
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
 
-      if (!name || !email) {
-        alert("Please fill in all fields.");
-        return;
-      }
+/*
+    Login simulation.
+*/
 
-      console.log("Form submitted:", name, email);
+form.addEventListener(
+    "submit",
+    async function (event) {
+
+        event.preventDefault();
+
+
+        const user =
+            username.value.trim();
+
+        const pass =
+            password.value;
+
+
+        /*
+            Basic frontend validation.
+        */
+
+        if (!user || !pass) {
+
+            showMessage(
+                "Please enter both your username and password.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        /*
+            Reset previous state.
+        */
+
+        flagBox.classList.remove(
+            "visible"
+        );
+
+        message.className =
+            "message";
+
+
+        /*
+            Loading state.
+        */
+
+        loginButton.classList.add(
+            "loading"
+        );
+
+        loginButton.textContent =
+            "Authenticating…";
+
+
+        /*
+            Simulated network delay.
+        */
+
+        await new Promise(
+            resolve =>
+                setTimeout(resolve, 900)
+        );
+
+
+        /*
+            Authentication completed.
+        */
+
+        loginButton.classList.remove(
+            "loading"
+        );
+
+        loginButton.textContent =
+            "Sign in";
+
+
+        /*
+            Successful login.
+        */
+
+        showMessage(
+            "Authentication successful.",
+            "success"
+        );
+
+
+        /*
+            Reveal flag.
+        */
+
+        setTimeout(
+            function () {
+
+                flagBox.classList.add(
+                    "visible"
+                );
+
+            },
+            450
+        );
+
     }
+);
 
-    // Initialize page
-    document.addEventListener("DOMContentLoaded", () => {
-      console.log("Page loaded successfully.");
-    });
-  </script>
+
+
+/*
+    Demo account.
+
+    This simply fills the fields for the
+    frontend demonstration.
+*/
+
+demoButton.addEventListener(
+    "click",
+    function () {
+
+        username.value =
+            "demo.user";
+
+        password.value =
+            "DemoPassword123!";
+
+
+        flagBox.classList.remove(
+            "visible"
+        );
+
+
+        showMessage(
+            "Demo credentials loaded. Click Sign in to continue.",
+            "success"
+        );
+
+    }
+);
+
+
+
+/*
+    Forgot password.
+*/
+
+forgotPassword.addEventListener(
+    "click",
+    function (event) {
+
+        event.preventDefault();
+
+        showMessage(
+            "Password recovery would normally be handled by the authentication server.",
+            "success"
+        );
+
+    }
+);
+</script>
 
 </body>
 </html>
+```
