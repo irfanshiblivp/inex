@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apex Fleet & Asset Operations Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Load SQL.js WebAssembly Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">APEX OPERATIONAL</span>
+          <span class="brand-subtitle">Fleet Management v4.12</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <a href="#" class="nav-item active">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+          Asset Directory
+        </a>
+        <a href="#" class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+          Live Telemetry
+        </a>
+        <a href="#" class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+          Audit Logs
+        </a>
+        <a href="#" class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+          Credentials & Tokens
+        </a>
+        <a href="#" class="nav-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          System Config
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-card">
+          <div class="avatar">OP</div>
+          <div class="user-info">
+            <span class="user-name">Operator #804</span>
+            <span class="user-role">Level 2 Field Dispatch</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Header Bar -->
+      <header class="topbar">
+        <div class="topbar-title">
+          <h1>Asset Fleet Telemetry</h1>
+          <span class="status-indicator">
+            <span class="dot green"></span> Node DB Connected (SQLite Engine)
+          </span>
+        </div>
+        <div class="topbar-actions">
+          <button class="btn btn-secondary" id="refreshBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+            Sync Telemetry
+          </button>
+          <button class="btn btn-primary" id="newAssetBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            Register Asset
+          </button>
+        </div>
+      </header>
+
+      <!-- Dashboard Stats -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-title">Active Fleet Units</span>
+            <span class="stat-icon cyan">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+            </span>
+          </div>
+          <div class="stat-value" id="totalUnitsCount">--</div>
+          <div class="stat-footer positive">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"></polyline></svg>
+            98.4% operational readiness
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-title">Regional Sectors</span>
+            <span class="stat-icon purple">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            </span>
+          </div>
+          <div class="stat-value">5 Sectors</div>
+          <div class="stat-footer neutral">Global deployment active</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-title">Database Records</span>
+            <span class="stat-icon emerald">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M21 19c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14"></path><path d="M21 5v14"></path></svg>
+            </span>
+          </div>
+          <div class="stat-value" id="recordCount">--</div>
+          <div class="stat-footer positive">Indexed and verified</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-title">Security Status</span>
+            <span class="stat-icon amber">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </span>
+          </div>
+          <div class="stat-value">Level 2 Restrict</div>
+          <div class="stat-footer alert">Tokens encrypted</div>
+        </div>
+      </section>
+
+      <!-- Search & Filter Controls Toolbar -->
+      <section class="filter-section">
+        <div class="filter-card">
+          <form id="searchForm" onsubmit="return false;">
+            <div class="filter-row">
+              <div class="search-input-group">
+                <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="searchInput" placeholder="Search by vehicle code, identifier, or keyword..." autocomplete="off">
+              </div>
+
+              <div class="select-group">
+                <label for="categoryFilter">Category:</label>
+                <select id="categoryFilter">
+                  <option value="ALL">All Categories</option>
+                  <option value="Transport">Transport</option>
+                  <option value="Armored">Armored</option>
+                  <option value="Reconnaissance">Reconnaissance</option>
+                  <option value="Logistics">Logistics</option>
+                </select>
+              </div>
+
+              <div class="select-group">
+                <label for="sortSelect">Sort By:</label>
+                <select id="sortSelect">
+                  <option value="unit_id">Asset ID</option>
+                  <option value="name">Vehicle Designation</option>
+                  <option value="fuel_level">Fuel Level</option>
+                  <option value="assigned_region">Region</option>
+                </select>
+              </div>
+
+              <button type="submit" class="btn btn-primary" id="executeSearchBtn">
+                Execute Filter
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Data Table Area -->
+      <section class="table-section">
+        <div class="table-header">
+          <h2>Active Fleet Directory</h2>
+          <span class="query-info" id="queryStatusText">Query execution ready</span>
+        </div>
+
+        <div class="table-container">
+          <table class="data-table" id="fleetTable">
+            <thead>
+              <tr id="tableHeaderRow">
+                <th>Asset ID</th>
+                <th>Designation</th>
+                <th>Category</th>
+                <th>Assigned Region</th>
+                <th>Status</th>
+                <th>Fuel / Battery</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="fleetTableBody">
+              <tr>
+                <td colspan="7" class="loading-cell">Loading asset database...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Asset Detail Modal -->
+  <div class="modal-overlay" id="detailModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Asset Telemetry Record</h3>
+        <button class="modal-close" id="closeModalBtn">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Dynamic Content -->
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
